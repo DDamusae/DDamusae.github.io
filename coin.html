@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+    
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+                <div class="col-xs-offset-4 col-xs-4">
+                <button id="btn" onclick="toss()" class="btn btn-primary btn-lg">동전던지기</button>
+                <img id="coin" src="1.jpg" alt="앞">
+            </div>
+            
+        </div>
+    </div>
+    <h1 id="coinStat">상태 기록: </h1>
+
+    <script>
+        var x = true;
+        var count = 1;
+        function toss(){
+            x = Math.floor(Math.random()*2);
+            document.getElementById("coinStat").innerHTML += count++ + "회차-";
+            if(x == true){ //동전 앞면
+                document.getElementById("coin").src = "1.jpg";
+                document.getElementById("coinStat").innerHTML += "앞면 ";
+            } else if(x == false){
+                document.getElementById("coin").src = "2.jpg";
+                document.getElementById("coinStat").innerHTML += "뒷면 ";
+            }
+        }
+    </script>
+</body>
+
+</html>
