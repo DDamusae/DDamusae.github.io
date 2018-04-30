@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    <textarea name="ta" id="ta" cols="30" rows="10">Peter Piper picked a peck of pickled peppers.A peck of pickled peppers Peter Piper picked.If Peter Piper picked a peck of pickled peppers,Where's the peck of pickled peppers Peter Piper picked?</textarea>
+    <br>
+    <button type="button" id = "btn" onclick="check()">p는 몇번?</button>
+
+    <p id="p"></p>
+
+    <script>
+        function check(){
+            var text = document.getElementById("ta").innerHTML;
+            var i;
+            var count = 0;
+            for(i=0; i<text.length; i++){
+                if(text.charAt(i) == 'p' || text.charAt(i) == 'P'){
+                    count++;
+                }
+            }
+            document.getElementById("p").innerHTML = count + "개 입니다.";
+        }
+    </script>
+</body>
+</html>
