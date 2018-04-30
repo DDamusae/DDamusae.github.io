@@ -15,24 +15,21 @@
     <script>
         $(document).ready(function () {
             $("button").click(function () {
-                var x = $("input").val();
+                var text = $("input").val();
+                var list = $("<li></li>");
                 
-                if(x){
-                    var newlist = $("<li></li>");
-                    newlist.text(x);
-                    newlist.click(function(){
-                        $(this).remove();
-                    });
-                    $("ul").append(newlist);
-                }
+                list.text(text);
+                $("ul").append(list);
+                $("li").click(function () {
+                    $(this).remove();
+                });
             });
-        }); 
+        });
 
     </script>
     <input type="text" value="">
     <button type="button">+</button>
-    <ul>
-    </ul>
+    <ul></ul>
 </body>
 
 </html>
