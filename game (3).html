@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>공이라도 튕기자</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background: #eee;
+            display: block;
+            margin: 10px auto;
+        }
+        h1{
+            margin: 10px auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- 캔버스 -->
+    <canvas id="myCanvas" width="480" height="320"></canvas>
+
+    <script>// 캔버스 그리기
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+    </script>
+
+
+    <script>//공 움직이기
+        //공의 좌표를 위한 변수
+        var x = canvas.width / 2; //공 좌표
+        var y = canvas.height - 30; //공 좌표
+        var dx = 2, dy = -2; //공 움직이는 숫자
+
+        var ballRadius = 10; //충돌 감지 위한 공의 반지름
+
+        //공을 쳐내는 패들을 위한 변수
+        var paddleHeight = 10; //패들 높이
+        var paddleWidth = 65; //패들 너비
+        var paddleX = (canvas.width - paddleWidth); //패들 x좌표
+        
+        var score = 0;
+        var sec = 0;
+
+        var count=0;
+
+        //좌우 버튼 입력 여부를 위한 변수
+        var rightPressed = false;
+        var legtPressed = false;
+
+        //키 입력에 관한 이벤트 리스너
+        document.addEventListener("keydown", keyDownHandler, false);
+        document.addEventListener("keyup", keyUpHandler, false);
+        
+        //버튼을 누를때 이벤트 처리 함수
+        function keyDownHandler(e) {
+            if (e.keyCode == 39) { //오른쪽 버튼이 눌렸는지 여부, 39는 오른쪽 버튼의 키코드
+                rightPressed = true;
+            } else if (e.keyCode == 37) { //왼쪽 버튼이 눌렸는지 여부, 37은 왼쪽 버튼의 키코드
+                leftPressed = true;
+            }
+        }
+        //버튼이 눌리지 않았을때 이벤트 처리 함수
+        function keyUpHandler(e) {
+            if (e.keyCode == 39) { //오른쪽 버튼이 안 눌렸는지 여부, 39는 오른쪽 버튼의 키코드
+                rightPressed = false;
+            } else if (e.keyCode == 37) { //왼쪽 버튼이 안 눌렸는지 여부, 37은 왼쪽 버튼의 키코드
+                leftPressed = false;
+            }
+        }
+
+        function drawBall() { //공의 현재 위치를 그리기 위한 함수
+            ctx.beginPath();
+            ctx.arc(x, y, ballRadius, 0, Math.PI * 2); //(x좌표, y좌표, 반지름, 시작각도, 끝각도)
+            ctx.fillStyle = "red";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawPaddle() { //공을 쳐내는 패들을 그리기 위한 함수
+            ctx.beginPath();
+            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
+            ctx.fillStyle = "blue";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function drawScore(){
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#0095DD";
+            ctx.fillText("Score: " +score, 8, 20)
+        }
+
+        function drawSec(){
+            ctx.font = "16px Arial";
+            ctx.fillStyle = "#0095DD";
+            ctx.fillText("Time: " + sec, canvas.width - 75, 20);
+            setInterval(sec = sec + 0.01, 1000);
+
+            if(dx>=0) setInterval(dx += 0.0001 , 1000);
+            else setInterval(dx -= 0.0001 , 1000);
+            if(dy>=0) setInterval(dy += 0.0001 , 1000);
+            else setInterval(dy -= 0.0001 , 1000);
+        }
+        
+        function collision(){
+            count += 0.01;
+            if(dx>=0) dx += count;
+            else dx -= count;
+            if(dy>=0) dy += count;
+            else dy -= count;
+        }
+
+        
+        
+        function draw() { //캔버스에 현재 상황을 그리는 함수
+            //drawing code
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawBall();
+            drawPaddle();
+            drawScore();
+            drawSec();
+            x += dx;
+            y += dy;
+            
+
+            //공 충돌 여부 판단 & 공 튕기기
+            //캔버스 상단 충돌 판단
+            if (y + dy < 0) {
+                dy = -dy;
+                collision();
+            }
+            //캔버스 하단 충돌 판단
+            if (y + dy > canvas.height) {
+                dy = 0;
+                alert("Game Over");
+                document.location.reload();
+            //패들과 공의 충돌 여부 판단. 충돌시 공 튕김
+            }else if(x+dx > paddleX && x+dx < paddleX + paddleWidth && y + dy > canvas.height - paddleHeight){
+                dy = -dy;
+                score++;    
+                collision();   
+            }
+        
+            //캔버스 좌측 충돌 판단
+            if (x + dx < 0) {
+                dx = -dx;
+                collision();
+            }
+            //캔버스 우측 충돌 판단
+            if (x + dx > canvas.width) {
+                dx = -dx;
+                collision();
+            }
+
+            //패들 좌우 이동
+            if (rightPressed && paddleX < canvas.width - paddleWidth) {
+                paddleX += 5;
+            } else if (leftPressed && paddleX > 0) {
+                paddleX -= 5;
+            }
+        }
+        
+        setInterval(draw, 10); //매 프레임 마다 캔버스 전체를 다시 그린다.
+        
+    </script>
+
+</body>
+
+</html>
